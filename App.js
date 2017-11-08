@@ -5,40 +5,46 @@
  * https://github.com/vinnyoodles/react-native-socket-io-example
  */
 
-import React, { Component } from 'react';
-import SocketIOClient from 'socket.io-client';
-import { GiftedChat } from 'react-native-gifted-chat';
+import React, { Component } from 'react'; //Classe a ser herdada
+import SocketIOClient from 'socket.io-client'; //Cliente para conectar com o server
+import { GiftedChat } from 'react-native-gifted-chat'; //Interface de chat
 import {
-  Platform,
-  StyleSheet,
-  Text,
+  Platform, //Nao ta usando
+  StyleSheet, // Ta usando, mas nao implementado 
+  Text, // Nao ta usando
   AsyncStorage,
   View
 } from 'react-native';
 
-const USER_ID = '@userId';
+const USER_ID = '@userId'; //Define a constante
 
-const instructions = Platform.select({
+/* const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
     'Cmd+D or shake for dev menu',
   android: 'Double tap R on your keyboard to reload,\n' +
     'Shake or press menu button for dev menu',
-});
+}); */ 
 
 export default class App extends Component<{}> {
+  // Método construtor passando as propriedades
   constructor(props){
+    // Passa props para a classe pai
     super(props);
+    //Inicializa com as propriedades e depois modifica com 'setState'
     this.state = {
       messages : [],
       userId: null
     }
+    // Inicializando as funções
     this.determineUSer = this.determineUSer.bind(this);
     this.onReceivedMessage = this.onReceivedMessage.bind(this);
     this.onSend = this.onSend.bind(this);
     this._storeMessages = this._storeMessages.bind(this);
     // Criando a instancia do socket-client. Irá conectar automaticamente
-    this.socket = SocketIOClient('http://10.42.0.1:3000');
+    this.socket = SocketIOClient('http://172.17.105.113:3000');
+    // Quando a mensagem é recebida pelo socket
     this.socket.on('message', this.onReceivedMessage);
+    // Executa função
     this.determineUSer();
   }
 
@@ -95,20 +101,5 @@ export default class App extends Component<{}> {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  
 });
