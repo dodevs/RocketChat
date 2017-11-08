@@ -1,7 +1,8 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
+ * React Native Chat
+ * Desenvolvido por Douglas Silva
+ * Baseado no exemplo de vinnyoodles
+ * https://github.com/vinnyoodles/react-native-socket-io-example
  */
 
 import React, { Component } from 'react';
