@@ -16,7 +16,7 @@ import {
   View
 } from 'react-native';
 
-const USER_ID = '@userId'; //Define a constante
+const USER_ID = '@userId'; //Define a constante o asyncStorage
 
 /* const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -41,7 +41,7 @@ export default class App extends Component<{}> {
     this.onSend = this.onSend.bind(this);
     this._storeMessages = this._storeMessages.bind(this);
     // Criando a instancia do socket-client. Irá conectar automaticamente
-    this.socket = SocketIOClient('http://172.17.105.113:3000');
+    this.socket = SocketIOClient('http://172.16.1.141:3000');
     // Quando a mensagem é recebida pelo socket
     this.socket.on('message', this.onReceivedMessage);
     // Executa função
@@ -54,8 +54,9 @@ export default class App extends Component<{}> {
    */
 
   determineUSer(){
-    AsyncStorage.getItem(USER_ID)
-      .then((userId) => {
+    // Armazenamento local
+    AsyncStorage.getItem(USER_ID) //Pega a constante
+      .then((userId) => { // 
         if(!userId) {
           this.socket.emit('userJoined', null);
           this.socket.on('userJoined', (userId) => {
@@ -70,18 +71,20 @@ export default class App extends Component<{}> {
       .catch((e) => alert(e));
   }
 
+  // Quando a mensagem chega, executa o método para salva-lo
   onReceivedMessage(messages) {
-    this._storeMessages(messages);
+    this._storeMessages(messages); // Ver na função
   }  
 
-  onSend(messages=[]) {
-    this.socket.emit('message', messages[0]);
-    this._storeMessages(messages);
+  onSend(messages=[]) { //Quando envia mensagem
+    this.socket.emit('message', messages[0]); //Envia o socket com a mensagem
+    this._storeMessages(messages); // Ver na função
   }
 
   _storeMessages(messages){
-    this.setState((previousState) => {
+    this.setState((previousState) => { // Passa o state atual
       return {
+        // Retorna com as mensagens antigas e novas
         messages: GiftedChat.append(previousState.messages, messages),
       };
     });
